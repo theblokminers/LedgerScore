@@ -333,7 +333,7 @@ contract ClaimHolder is KeyHolder, ERC735 {
 
 contract Identity is ClaimHolder {
 
-    function IdentityFunction(
+    constructor (
         uint256[] memory _claimType,
         uint256[] memory _scheme,
         address[] memory _issuer,
@@ -344,7 +344,7 @@ contract Identity is ClaimHolder {
         uint256[] memory dataSizes,
         uint256[] memory uriSizes
     )
-        public
+    
     {
         bytes32 claimId;
         uint offset = 0;
