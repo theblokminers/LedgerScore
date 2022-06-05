@@ -45,11 +45,10 @@ contract ClaimVerifier {
     // Construct claimId (identifier + claim type)
     bytes32 claimId = keccak256(abi.encodePacked(trustedClaimHolder, claimType));
 
-    // Fetch claim from user
     ( foundClaimType, scheme, issuer, sig, data, ) = _identity.getClaim(claimId);
 
-    bytes32 dataHash = keccak256(abi.encodePacked("abc"));
-    bytes32 prefixedHash = keccak256(abi.encodePacked(dataHash));
+    bytes32 dataHash = keccak256(abi.encodePacked(_identity, claimType, data));
+    bytes32 prefixedHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", dataHash));
 
     // Recover address of data signer
     address recovered = getRecoveredAddress(sig, prefixedHash);
@@ -61,10 +60,11 @@ contract ClaimVerifier {
     return trustedClaimHolder.keyHasPurpose(hashedAddr, 3);
   }
 
-  function getKeccak() public pure returns(bytes32) {
+  function getKeccak(address _identity, uint256 claimType, bytes memory data) public pure returns(bytes32, bytes32) {
     
-    bytes32 prefixedHash = keccak256(abi.encodePacked("abc"));
-    return(prefixedHash);
+    bytes32 dataHash = keccak256(abi.encodePacked(_identity, claimType, data));
+    bytes32 prefixedHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", dataHash));
+    return(dataHash, prefixedHash);
   }
 
   function returnclaim(uint256 claimType) public view returns(bytes32){
