@@ -359,7 +359,7 @@ contract Identity is ClaimHolder {
                 _claimType[i],
                 _scheme[i],
                 _issuer[i],
-                getbytes(_signature, offset, _sigSizes[i]),
+                _signature,
                 getbytes(_data, doffset, dataSizes[i]),
                 getString(_uri, uoffset, uriSizes[i])
             );
